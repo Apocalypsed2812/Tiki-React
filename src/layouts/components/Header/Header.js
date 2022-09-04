@@ -1,8 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faUser, faCaretDown, faCartShopping, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faHouse } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
+//import HeadlessTippy from '@tippyjs/react/headless';
+
+//import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './Header.module.scss';
+import Search from '../Search';
+import Auth from '../Auth';
 
 const cx = classNames.bind(styles);
 
@@ -21,47 +26,16 @@ function Header() {
                     />
                 </Link>
                 <div className={cx('search-cart')}>
-                    <div className={cx('search')}>
-                        <div className={cx('with-search')}>
-                            <input
-                                type="text"
-                                placeholder="Tìm kiếm sản phẩm, danh mục hay thương hiệu mong muốn ..."
-                            />
-                            <button>
-                                <FontAwesomeIcon icon={faMagnifyingGlass} className={cx('icon-search')} />
-                                Tìm kiếm
-                            </button>
-                        </div>
-                        <div className={cx('search-category')}>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                            <span>Trái cây</span>
-                        </div>
-                    </div>
-                    <div className={cx('auth')}>
-                        <FontAwesomeIcon icon={faUser} className={cx('icon-user')} />
-                        <div className={cx('auth-action')}>
-                            <span>Đăng Nhập</span>/<span>Đăng kí</span>
-                            <p>
-                                Tài khoản <FontAwesomeIcon icon={faCaretDown} className={cx('icon-down')} />
-                            </p>
-                        </div>
-                    </div>
+                    <Search />
+                    <Auth />
                     <div className={cx('cart')}>
-                        <div className={cx('cart-top')}>
+                        <Link to="/cart" className={cx('cart-top')}>
                             <div className={cx('cart-wrap')}>
                                 <FontAwesomeIcon icon={faCartShopping} className={cx('icon-cart')} />
                                 <span className={cx('cart-badget')}>4</span>
                             </div>
                             <p>Giỏ Hàng</p>
-                        </div>
+                        </Link>
                         <div className={cx('cart-bottom')}>
                             <FontAwesomeIcon icon={faHouse} className={cx('icon-house')} />
                             Bán hàng cùng tiki

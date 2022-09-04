@@ -190,7 +190,7 @@ function Container() {
 
                 <div className={cx('row', 'sm-gutter', 'mt-16')}>
                     <div className={cx('col', 'l-2')}>
-                        <Link to="" className={cx('product')}>
+                        <Link to="/product_detail" className={cx('product')}>
                             <img
                                 className={cx('product-img')}
                                 src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
