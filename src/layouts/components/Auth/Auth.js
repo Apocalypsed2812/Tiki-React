@@ -10,7 +10,7 @@ import styles from './Auth.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Auth() {
+function Auth({ onClickLogin, onClickRegister }) {
     const [showResult, setShowResult] = useState(false);
 
     const handleHideResult = () => {
@@ -25,7 +25,7 @@ function Auth() {
         <div className={cx('auth')}>
             <FontAwesomeIcon icon={faUser} className={cx('icon-user')} />
             <div className={cx('auth-action')}>
-                <span>Đăng Nhập</span>/<span>Đăng kí</span>
+                <span onClick={onClickLogin}>Đăng Nhập</span>/<span onClick={onClickRegister}>Đăng kí</span>
                 <HeadlessTippy
                     interactive
                     visible={showResult}
