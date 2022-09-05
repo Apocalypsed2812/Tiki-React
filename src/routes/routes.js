@@ -14,7 +14,7 @@ import LayoutSidebar from '~/layouts/LayoutSidebar';
 //Public routes
 const publicRoutes = [
     { path: '/', component: Home },
-    { path: '/product_detail', component: ProductDetail },
+    { path: '/product_detail/:id', component: ProductDetail },
     { path: '/cart', component: Cart },
     { path: '/account', component: UserInfor, layout: LayoutSidebar },
     { path: '/order', component: Order, layout: LayoutSidebar },

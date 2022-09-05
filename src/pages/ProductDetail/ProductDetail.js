@@ -3,92 +3,107 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import styles from './ProductDetail.module.scss';
 
 const cx = classNames.bind(styles);
 
 function Product_detail() {
+    const { id } = useParams();
+
+    const [productList, setProductList] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:4000/staff/getProduct/' + id, {
+            method: 'GET',
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                setProductList(json.data);
+            })
+            .catch((e) => console.log(e));
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'wide')}>
-                <div className={cx('row')}>
-                    <div className={cx('col', 'l-4')}>
-                        <img
-                            src="https://salt.tikicdn.com/cache/w1200/ts/product/aa/24/e0/57914989351786ef9dfe027046ba4626.jpg"
-                            alt="iphon13"
-                            className={cx('thumbail')}
-                        />
-                        <div className={cx('sharing')}>
-                            Chia sẻ:
-                            <FontAwesomeIcon icon={faFacebook} className={cx('icon-share')} />
-                            <FontAwesomeIcon icon={faInstagram} className={cx('icon-share')} />
-                            <FontAwesomeIcon icon={faLinkedin} className={cx('icon-share')} />
-                        </div>
-                    </div>
-                    <div className={cx('col', 'l-8', 'inner')}>
-                        <h3 className={cx('heading')}>Apple Iphone 13</h3>
-                        <div className={cx('content')}>
-                            <FontAwesomeIcon
-                                icon={faStar}
-                                className={cx('product-action-star', 'product-action-star--gold')}
-                            />
-                            <FontAwesomeIcon
-                                icon={faStar}
-                                className={cx('product-action-star', 'product-action-star--gold')}
-                            />
-                            <FontAwesomeIcon
-                                icon={faStar}
-                                className={cx('product-action-star', 'product-action-star--gold')}
-                            />
-                            <FontAwesomeIcon
-                                icon={faStar}
-                                className={cx('product-action-star', 'product-action-star--gold')}
-                            />
-                            <FontAwesomeIcon
-                                icon={faStar}
-                                className={cx('product-action-star', 'product-action-star--gold')}
-                            />
-                            <div className={cx('comment')}>
-                                (Xem <span>2554</span> đánh giá)
-                            </div>
-                            <div className={cx('separate')}></div>
-                            <div className={cx('sold')}>
-                                Đã bán <span>5000</span>+
+                {productList.map((product, index) => (
+                    <div className={cx('row')}>
+                        <div className={cx('col', 'l-4')}>
+                            <img src={product.image} alt="iphon13" className={cx('thumbail')} />
+                            <div className={cx('sharing')}>
+                                Chia sẻ:
+                                <FontAwesomeIcon icon={faFacebook} className={cx('icon-share')} />
+                                <FontAwesomeIcon icon={faInstagram} className={cx('icon-share')} />
+                                <FontAwesomeIcon icon={faLinkedin} className={cx('icon-share')} />
                             </div>
                         </div>
-                        <div className={cx('price')}>
-                            <p className={cx('new-price')}>10.850.000 đ</p>
-                            <p className={cx('old-price')}>12.999.000 đ</p>
-                            <p className={cx('sale')}>-16%</p>
-                        </div>
-                        <div className={cx('color')}>
-                            <p>
-                                Màu: <span>Đen</span>
-                            </p>
-                            <ul className={cx('color-list')}>
-                                <li className={cx('color-item')}>Trắng</li>
-                                <li className={cx('color-item')}>Tím</li>
-                                <li className={cx('color-item')}>Vàng</li>
-                                <li className={cx('color-item')}>Xanh lục</li>
-                                <li className={cx('color-item')}>Đen</li>
-                                <li className={cx('color-item')}>Đen</li>
-                            </ul>
-                        </div>
-                        <div className={cx('quantity')}>
-                            <button className={cx('sub')}>-</button>
-                            <button className={cx('current')}>1</button>
-                            <button className={cx('add')}>+</button>
-                        </div>
-                        <div className={cx('buy')}>
-                            <button className={cx('buy-now')}>Chọn Mua</button>
-                            <button className={cx('buy-after')}>
-                                Trả góp
-                                <p>904.164 đ / tháng</p>
-                            </button>
+                        <div className={cx('col', 'l-8', 'inner')}>
+                            <h3 className={cx('heading')}>{product.name}</h3>
+                            <div className={cx('content')}>
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={cx('product-action-star', 'product-action-star--gold')}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={cx('product-action-star', 'product-action-star--gold')}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={cx('product-action-star', 'product-action-star--gold')}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={cx('product-action-star', 'product-action-star--gold')}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={cx('product-action-star', 'product-action-star--gold')}
+                                />
+                                <div className={cx('comment')}>
+                                    (Xem <span>2554</span> đánh giá)
+                                </div>
+                                <div className={cx('separate')}></div>
+                                <div className={cx('sold')}>
+                                    Đã bán <span>5000</span>+
+                                </div>
+                            </div>
+                            <div className={cx('price')}>
+                                <p className={cx('new-price')}>{product.new_price} đ</p>
+                                <p className={cx('old-price')}>{product.old_price} đ</p>
+                                <p className={cx('sale')}>-16%</p>
+                            </div>
+                            <div className={cx('color')}>
+                                <p>
+                                    Màu: <span>Đen</span>
+                                </p>
+                                <ul className={cx('color-list')}>
+                                    <li className={cx('color-item')}>Trắng</li>
+                                    <li className={cx('color-item')}>Tím</li>
+                                    <li className={cx('color-item')}>Vàng</li>
+                                    <li className={cx('color-item')}>Xanh lục</li>
+                                    <li className={cx('color-item')}>Đen</li>
+                                    <li className={cx('color-item')}>Đen</li>
+                                </ul>
+                            </div>
+                            <div className={cx('quantity')}>
+                                <button className={cx('sub')}>-</button>
+                                <button className={cx('current')}>1</button>
+                                <button className={cx('add')}>+</button>
+                            </div>
+                            <div className={cx('buy')}>
+                                <button className={cx('buy-now')}>Chọn Mua</button>
+                                <button className={cx('buy-after')}>
+                                    Trả góp
+                                    <p>904.164 đ / tháng</p>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                ))}
 
                 <div className={cx('description')}>
                     <h3 className={cx('des-name')}>Mô tả sản phẩm</h3>

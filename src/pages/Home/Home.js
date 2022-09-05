@@ -4,10 +4,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.scss';
+import { useState, useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Container() {
+    const [productList, setProductList] = useState([]);
+
+    const quantityProduct = 6;
+
+    useEffect(() => {
+        fetch('http://localhost:4000/staff/getProductList/' + quantityProduct, {
+            method: 'GET',
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                setProductList(json.data);
+            })
+            .catch((e) => console.log(e));
+    }, []);
+
     return (
         <>
             <div className={cx('container')}>
@@ -190,245 +206,43 @@ function Container() {
                     </div>
 
                     <div className={cx('row', 'sm-gutter', 'mt-16')}>
-                        <div className={cx('col', 'l-2')}>
-                            <Link to="/product_detail" className={cx('product')}>
-                                <img
-                                    className={cx('product-img')}
-                                    src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
-                                    alt=""
-                                />
-                                <p className={cx('product-heading')}>Apple iphone 13</p>
-                                <div className={cx('product-action')}>
-                                    <div className={cx('product-action-rating')}>
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
+                        {productList.map((product, index) => (
+                            <div className={cx('col', 'l-2', 'mt-8')} key={index}>
+                                <Link to={`/product_detail/${product._id}`} className={cx('product')}>
+                                    <img className={cx('product-img')} src={product.image} alt="" />
+                                    <p className={cx('product-heading')}>{product.name}</p>
+                                    <div className={cx('product-action')}>
+                                        <div className={cx('product-action-rating')}>
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                className={cx('product-action-star', 'product-action-star--gold')}
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                className={cx('product-action-star', 'product-action-star--gold')}
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                className={cx('product-action-star', 'product-action-star--gold')}
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                className={cx('product-action-star', 'product-action-star--gold')}
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                className={cx('product-action-star', 'product-action-star--gold')}
+                                            />
+                                        </div>
+                                        <p className={cx('product-action-sold')}>Đã bán 1000+</p>
                                     </div>
-                                    <p className={cx('product-action-sold')}>Đã bán 1000+</p>
-                                </div>
-                                <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>19.219.000 đ</span>
-                                    <span className={cx('product-price-sale')}>-23%</span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className={cx('col', 'l-2')}>
-                            <Link to="" className={cx('product')}>
-                                <img
-                                    className={cx('product-img')}
-                                    src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
-                                    alt=""
-                                />
-                                <p className={cx('product-heading')}>Apple iphone 13</p>
-                                <div className={cx('product-action')}>
-                                    <div className={cx('product-action-rating')}>
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
+                                    <div className={cx('product-price')}>
+                                        <span className={cx('product-new-price')}>{product.new_price} đ</span>
+                                        <span className={cx('product-price-sale')}>-23%</span>
                                     </div>
-                                    <p className={cx('product-action-sold')}>Đã bán 1000+</p>
-                                </div>
-                                <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>19.219.000 đ</span>
-                                    <span className={cx('product-price-sale')}>-23%</span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className={cx('col', 'l-2')}>
-                            <Link to="" className={cx('product')}>
-                                <img
-                                    className={cx('product-img')}
-                                    src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
-                                    alt=""
-                                />
-                                <p className={cx('product-heading')}>Apple iphone 13</p>
-                                <div className={cx('product-action')}>
-                                    <div className={cx('product-action-rating')}>
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                    </div>
-                                    <p className={cx('product-action-sold')}>Đã bán 1000+</p>
-                                </div>
-                                <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>19.219.000 đ</span>
-                                    <span className={cx('product-price-sale')}>-23%</span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className={cx('col', 'l-2')}>
-                            <Link to="" className={cx('product')}>
-                                <img
-                                    className={cx('product-img')}
-                                    src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
-                                    alt=""
-                                />
-                                <p className={cx('product-heading')}>Apple iphone 13</p>
-                                <div className={cx('product-action')}>
-                                    <div className={cx('product-action-rating')}>
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                    </div>
-                                    <p className={cx('product-action-sold')}>Đã bán 1000+</p>
-                                </div>
-                                <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>19.219.000 đ</span>
-                                    <span className={cx('product-price-sale')}>-23%</span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className={cx('col', 'l-2')}>
-                            <Link to="" className={cx('product')}>
-                                <img
-                                    className={cx('product-img')}
-                                    src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
-                                    alt=""
-                                />
-                                <p className={cx('product-heading')}>Apple iphone 13</p>
-                                <div className={cx('product-action')}>
-                                    <div className={cx('product-action-rating')}>
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                    </div>
-                                    <p className={cx('product-action-sold')}>Đã bán 1000+</p>
-                                </div>
-                                <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>19.219.000 đ</span>
-                                    <span className={cx('product-price-sale')}>-23%</span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className={cx('col', 'l-2')}>
-                            <Link to="" className={cx('product')}>
-                                <img
-                                    className={cx('product-img')}
-                                    src="https://salt.tikicdn.com/cache/280x280/ts/product/dd/42/95/ae7976cda4f1ae1de6be8c5e84df1815.png"
-                                    alt=""
-                                />
-                                <p className={cx('product-heading')}>Apple iphone 13</p>
-                                <div className={cx('product-action')}>
-                                    <div className={cx('product-action-rating')}>
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faStar}
-                                            className={cx('product-action-star', 'product-action-star--gold')}
-                                        />
-                                    </div>
-                                    <p className={cx('product-action-sold')}>Đã bán 1000+</p>
-                                </div>
-                                <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>19.219.000 đ</span>
-                                    <span className={cx('product-price-sale')}>-23%</span>
-                                </div>
-                            </Link>
-                        </div>
+                                </Link>
+                            </div>
+                        ))}
                     </div>
                     <div className={cx('row')}>
                         <div className={cx('col', 'l-12')}>
