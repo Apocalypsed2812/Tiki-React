@@ -1,10 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from './routes';
 import { DefaultLayout } from './layouts';
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
+
+import { GlobalState } from './context/GlobalState';
 import ScrollToTop from '~/routes/ScrollToTop';
+//import UserAPI from '~/context/UserAPI';
 
 function App() {
+    const state = useContext(GlobalState);
+    const isLogin = state.UserAPI.login[0];
+    const isAdmin = state.UserAPI.admin[0];
+    // console.log(isLogin);
+    // console.log(isAdmin);
+
     return (
         <Router>
             <div className="App">
@@ -27,7 +36,7 @@ function App() {
                                     path={route.path}
                                     element={
                                         <Layout>
-                                            <Page />
+                                            <Page isAdmin={isAdmin} isLogin={isLogin} />
                                         </Layout>
                                     }
                                 />

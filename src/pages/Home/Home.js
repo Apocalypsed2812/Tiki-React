@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import styles from './Home.module.scss';
 import { useState, useEffect } from 'react';
 
+import { getMethod } from '~/utils/fetchData';
+
 const cx = classNames.bind(styles);
 
 function Container() {
@@ -14,14 +16,20 @@ function Container() {
     const quantityProduct = 6;
 
     useEffect(() => {
-        fetch('http://localhost:4000/staff/getProductList/' + quantityProduct, {
-            method: 'GET',
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                setProductList(json.data);
+        const getProducts = async () => {
+            let response = await getMethod('product');
+            return response;
+        };
+        getProducts()
+            .then((res) => {
+                if (res.success) {
+                    console.log(res.products);
+                    setProductList(res.products);
+                }
             })
-            .catch((e) => console.log(e));
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
 
     return (
@@ -78,7 +86,7 @@ function Container() {
                         <div className={cx('col', 'l-6', 'banner-2')}>
                             <Link to="">
                                 <img
-                                    src="https://salt.tikicdn.com/ts/banner/20/Linkf/9d/4e50e81e8ce309abe3f68d2f58a18562.png"
+                                    src="https://salt.tikicdn.com/ts/banner/d1/d8/52/a7b3eca6b1bcf0fe0b07312fcc7b4fad.png"
                                     alt=""
                                 />
                             </Link>
@@ -209,7 +217,7 @@ function Container() {
                         {productList.map((product, index) => (
                             <div className={cx('col', 'l-2', 'mt-8')} key={index}>
                                 <Link to={`/product_detail/${product._id}`} className={cx('product')}>
-                                    <img className={cx('product-img')} src={product.image} alt="" />
+                                    <img className={cx('product-img')} src={product.image_url} alt="" />
                                     <p className={cx('product-heading')}>{product.name}</p>
                                     <div className={cx('product-action')}>
                                         <div className={cx('product-action-rating')}>
@@ -237,7 +245,7 @@ function Container() {
                                         <p className={cx('product-action-sold')}>Đã bán 1000+</p>
                                     </div>
                                     <div className={cx('product-price')}>
-                                        <span className={cx('product-new-price')}>{product.new_price} đ</span>
+                                        <span className={cx('product-new-price')}>{product.price} đ</span>
                                         <span className={cx('product-price-sale')}>-23%</span>
                                     </div>
                                 </Link>

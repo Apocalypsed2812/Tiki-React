@@ -1,16 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import Swal from 'sweetalert2';
 
 import styles from './ProductDetail.module.scss';
+import { GlobalState } from '~/context/GlobalState';
+import { getMethod, getMethodId, postMethod } from '~/utils/fetchData';
 
 const cx = classNames.bind(styles);
 
 function Product_detail() {
+    const state = useContext(GlobalState);
+    const isLogin = state.UserAPI.login[0];
+    const [cart, setCart] = state.UserAPI.cart;
+
+    let navigate = useNavigate();
+
     //Product detail
     const { id } = useParams();
     const [product, setProduct] = useState([]);
@@ -22,34 +31,68 @@ function Product_detail() {
     //quantity
     const [quantity, setQuantity] = useState(1);
 
-    //Call API for product
     useEffect(() => {
-        fetch('http://localhost:4000/staff/getProduct/' + id + '&' + quantityProduct, {
-            method: 'GET',
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                console.log(json);
-                setProduct(json.data);
-                setProductList(json.productListInvolve);
+        const getProductById = async () => {
+            let response = await getMethodId('product', id);
+            return response;
+        };
+        const getProducts = async () => {
+            let response = await getMethod('product');
+            return response;
+        };
+        getProductById()
+            .then((res) => {
+                if (res.success) {
+                    console.log(res.product);
+                    setProduct(res.product);
+                }
             })
-            .catch((e) => console.log(e));
-    }, []);
+            .catch((err) => {
+                console.log(err);
+            });
+        getProducts()
+            .then((res) => {
+                if (res.success) {
+                    console.log(res.products);
+                    setProductList(res.products);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, [id]);
 
-    //Add quantity product
-    const handleAddQuantity = (id) => {
-        fetch('http://localhost:4000/staff/addQuantityProduct/' + id, {
-            method: 'GET',
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                console.log(json);
-                setQuantity(json.data);
+    const handleAddToCart = () => {
+        if (!isLogin) {
+            Swal.fire({
+                title: 'User not logged in ',
+                text: 'Please login to continue',
+                icon: 'error',
+            });
+            return;
+        }
+        postMethod('add-to-cart', { product_id: id })
+            .then((res) => {
+                if (res.success) {
+                    setCart([...cart, product._id]);
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Product has been added to cart',
+                        icon: 'success',
+                    });
+                    // navigate('/cart');
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: res.message,
+                        icon: 'error',
+                    });
+                }
             })
-            .catch((e) => console.log(e));
+            .catch((err) => {
+                console.log(err);
+            });
     };
-
-    useEffect(handleAddQuantity, []);
 
     return (
         <div className={cx('wrapper')}>
@@ -57,7 +100,7 @@ function Product_detail() {
                 {product.map((product, index) => (
                     <div className={cx('row')} key={index}>
                         <div className={cx('col', 'l-4')}>
-                            <img src={product.image} alt="iphon13" className={cx('thumbail')} />
+                            <img src={product.image_url} alt="iphon13" className={cx('thumbail')} />
                             <div className={cx('sharing')}>
                                 Chia sẻ:
                                 <FontAwesomeIcon icon={faFacebook} className={cx('icon-share')} />
@@ -97,8 +140,8 @@ function Product_detail() {
                                 </div>
                             </div>
                             <div className={cx('price')}>
-                                <p className={cx('new-price')}>{product.new_price} đ</p>
-                                <p className={cx('old-price')}>{product.old_price} đ</p>
+                                <p className={cx('new-price')}>{product.price} đ</p>
+                                <p className={cx('old-price')}>{product.price} đ</p>
                                 <p className={cx('sale')}>-16%</p>
                             </div>
                             <div className={cx('color')}>
@@ -117,12 +160,12 @@ function Product_detail() {
                             <div className={cx('quantity')}>
                                 <button className={cx('sub')}>-</button>
                                 <button className={cx('current')}>{quantity}</button>
-                                <button className={cx('add')} onClick={handleAddQuantity(product._id)}>
-                                    +
-                                </button>
+                                <button className={cx('add')}>+</button>
                             </div>
                             <div className={cx('buy')}>
-                                <button className={cx('buy-now')}>Chọn Mua</button>
+                                <button className={cx('buy-now')} onClick={() => handleAddToCart()}>
+                                    Thêm vào giỏ hàng
+                                </button>
                                 <button className={cx('buy-after')}>
                                     Trả góp
                                     <p>904.164 đ / tháng</p>
@@ -160,8 +203,8 @@ function Product_detail() {
                     <h3 className={cx('col', 'l-12', 'product-intro')}>Sản phẩm liên quan</h3>
                     {productList.map((product, index) => (
                         <div className={cx('col', 'l-2')} key={index}>
-                            <Link to="/product_detail" className={cx('product')}>
-                                <img className={cx('product-img')} src={product.image} alt={product.name} />
+                            <Link to={`/product_detail/${product._id}`} className={cx('product')}>
+                                <img className={cx('product-img')} src={product.image_url} alt={product.name} />
                                 <p className={cx('product-heading')}>{product.name}</p>
                                 <div className={cx('product-action')}>
                                     <div className={cx('product-action-rating')}>
@@ -189,7 +232,7 @@ function Product_detail() {
                                     <p className={cx('product-action-sold')}>Đã bán 1000+</p>
                                 </div>
                                 <div className={cx('product-price')}>
-                                    <span className={cx('product-new-price')}>{product.new_price} đ</span>
+                                    <span className={cx('product-new-price')}>{product.price} đ</span>
                                     <span className={cx('product-price-sale')}>-23%</span>
                                 </div>
                             </Link>

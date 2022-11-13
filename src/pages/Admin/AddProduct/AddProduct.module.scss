@@ -1,0 +1,47 @@
+.form {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    padding: 0 32px;
+
+    .heading {
+        display: flex;
+        justify-content: center;
+        margin: 16px 0;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    .form-control {
+        width: 100%;
+        border: 1px solid #ccc;
+        padding: 12px;
+    }
+
+    .form-control.form-control-textarea {
+        height: 150px;
+    }
+
+    .label {
+        margin-bottom: 8px;
+    }
+}
+
+.form-group.form-group-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.btn-create {
+    margin-left: 16px;
+}
+
+.product-img {
+    width: 100px;
+    height: 100px;
+}

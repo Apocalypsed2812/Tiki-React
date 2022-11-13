@@ -70,6 +70,18 @@ a {
     margin-right: 8px;
 }
 
+.mr-16 {
+    margin-right: 16px;
+}
+
+.mr-32 {
+    margin-right: 32px;
+}
+
+.mr-64 {
+    margin-right: 64px;
+}
+
 // Padding
 .pt-16 {
     padding-top: 16px;
@@ -83,7 +95,87 @@ a {
     padding-top: 64px;
 }
 
-// Grid system
+// Text
+.text-justify {
+    text-align: justify;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-success {
+    color: green;
+}
+
+.text-danger {
+    color: red;
+}
+
+.text-primary {
+    color: blue;
+}
+
+// Button
+.btn {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.btn.btn-outline-success {
+    border: 1px solid green;
+    color: green;
+    background-color: transparent;
+}
+
+.btn.btn-outline-success:hover {
+    border: 1px solid green;
+    color: var(--white-color);
+    background-color: green;
+}
+
+.btn.btn-outline-danger {
+    border: 1px solid red;
+    color: red;
+    background-color: transparent;
+}
+
+.btn.btn-outline-danger:hover {
+    border: 1px solid red;
+    color: var(--white-color);
+    background-color: red;
+}
+
+.btn.btn-outline-primary {
+    border: 1px solid blue;
+    color: blue;
+    background-color: transparent;
+}
+
+.btn.btn-outline-primary:hover {
+    border: 1px solid blue;
+    color: var(--white-color);
+    background-color: blue;
+}
+
+// Table
+.table {
+    width: 100%;
+}
+
+.table-head {
+    font-weight: 600;
+}
+
+.table-row {
+    border: 1px solid black;
+}
+
+.table-col {
+    padding: 16px 8px;
+}
+
+// // Grid system
 .grid {
     width: 100%;
     display: block;
@@ -685,7 +777,7 @@ a {
     left: 0;
     display: flex;
     animation: fadeIn linear 0.1s;
-    display: none;
+    //display: none;
 }
 
 .modal__overlay {

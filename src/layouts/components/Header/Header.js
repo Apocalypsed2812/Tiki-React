@@ -1,11 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHouse } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import Swal from 'sweetalert2';
 //import HeadlessTippy from '@tippyjs/react/headless';
 
 //import { Wrapper as PopperWrapper } from '~/components/Popper';
+import { GlobalState } from '~/context/GlobalState';
 import styles from './Header.module.scss';
 import Search from '../Search';
 import Auth from '../Auth';
@@ -13,8 +15,11 @@ import Auth from '../Auth';
 const cx = classNames.bind(styles);
 
 function Header() {
+    const navigate = useNavigate();
     const [showModalLogin, setShowModalLogin] = useState(false);
     const [showModalRegister, setShowModalRegister] = useState(false);
+    const state = useContext(GlobalState);
+    const isLogin = state.UserAPI.login[0];
 
     const handleSwitchRegister = () => {
         setShowModalLogin(false);
@@ -39,6 +44,19 @@ function Header() {
         setShowModalRegister(false);
     };
 
+    const hanleClickCart = (e) => {
+        e.preventDefault();
+        if (!isLogin) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please login to continue',
+                icon: 'error',
+            });
+            return;
+        }
+        navigate('/cart');
+    };
+
     return (
         <>
             <header className={cx('wrapper')}>
@@ -57,7 +75,7 @@ function Header() {
                         <Search />
                         <Auth onClickLogin={createModalLogin} onClickRegister={createModalRegister} />
                         <div className={cx('cart')}>
-                            <Link to="/cart" className={cx('cart-top')}>
+                            <Link to="/cart" className={cx('cart-top')} onClick={hanleClickCart}>
                                 <div className={cx('cart-wrap')}>
                                     <FontAwesomeIcon icon={faCartShopping} className={cx('icon-cart')} />
                                     <span className={cx('cart-badget')}>4</span>

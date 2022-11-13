@@ -1,16 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import HeadlessTippy from '@tippyjs/react/headless';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
+import { GlobalState } from '~/context/GlobalState';
 import styles from './Auth.module.scss';
 
 const cx = classNames.bind(styles);
 
 function Auth({ onClickLogin, onClickRegister }) {
+    const navigate = useNavigate();
+    const state = useContext(GlobalState);
+    const [isLogin, setIsLogin] = state.UserAPI.login;
+    const user = state.UserAPI.user[0];
+
     const [showResult, setShowResult] = useState(false);
 
     const handleHideResult = () => {
@@ -21,11 +27,30 @@ function Auth({ onClickLogin, onClickRegister }) {
         setShowResult(true);
     };
 
+    const handleLogOut = () => {
+        localStorage.clear();
+        setIsLogin(false);
+        navigate('/login');
+    };
+
     return (
         <div className={cx('auth')}>
             <FontAwesomeIcon icon={faUser} className={cx('icon-user')} />
             <div className={cx('auth-action')}>
-                <span onClick={onClickLogin}>Đăng Nhập</span>/<span onClick={onClickRegister}>Đăng kí</span>
+                {isLogin ? (
+                    <Link to="" className={cx('auth-action-link')} onClick={handleLogOut}>
+                        Đăng Xuất
+                    </Link>
+                ) : (
+                    <>
+                        <Link to="/login" onClick={onClickLogin} className={cx('auth-action-link')}>
+                            Đăng Nhập /
+                        </Link>
+                        <Link to="/register" onClick={onClickRegister} className={cx('auth-action-link')}>
+                            Đăng kí
+                        </Link>
+                    </>
+                )}
                 <HeadlessTippy
                     interactive
                     visible={showResult}
