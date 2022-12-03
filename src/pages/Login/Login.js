@@ -116,8 +116,7 @@ function Login() {
                     <div className={cx('pass')}>Forgot Password?</div>
                     <input type="submit" value="Login" />
                     <div className={cx('signup_link')}>
-                        Don't have a account?
-                        <Link to="/register">Register</Link>
+                        Don't have a account ?<Link to="/register">Register</Link>
                     </div>
                 </form>
             </div>

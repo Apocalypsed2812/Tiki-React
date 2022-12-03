@@ -162,8 +162,7 @@ function Register() {
                     </div>
                     <input type="submit" value="Register" />
                     <div className={cx('signup_link')}>
-                        You have a account?
-                        <Link to="/login">Login</Link>
+                        You have a account ?<Link to="/login">Login</Link>
                     </div>
                 </form>
             </div>

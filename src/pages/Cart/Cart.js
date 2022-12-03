@@ -12,8 +12,6 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-let cartProduct = true;
-
 function Cart() {
     const state = useContext(GlobalState);
     const [cart, setCart] = state.UserAPI.cart;
@@ -95,6 +93,32 @@ function Cart() {
             });
     };
 
+    const handleChangQuantity = (product, handle) => {
+        if (product.quantity === 1 && handle === 'descrease') {
+            Swal.fire({
+                title: 'error',
+                text: 'Số lượng không được nhỏ hơn 0',
+                icon: 'error',
+            });
+            return;
+        }
+        postMethod('change-quantity', { product_id: product._id, handle })
+            .then((res) => {
+                if (res.success) {
+                    setCart(res.user.cart);
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: res.message,
+                        icon: 'error',
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'wide')}>
@@ -149,9 +173,19 @@ function Cart() {
                                                     </div>
                                                 </div>
                                                 <div className={cx('quantity')}>
-                                                    <button className={cx('sub')}>-</button>
+                                                    <button
+                                                        className={cx('sub')}
+                                                        onClick={() => handleChangQuantity(item, 'descrease')}
+                                                    >
+                                                        -
+                                                    </button>
                                                     <button className={cx('current')}>{item.quantity}</button>
-                                                    <button className={cx('add')}>+</button>
+                                                    <button
+                                                        className={cx('add')}
+                                                        onClick={() => handleChangQuantity(item, 'inscrease')}
+                                                    >
+                                                        +
+                                                    </button>
                                                 </div>
                                                 <div className={cx('buy-price')}>{item.price * item.quantity} đ</div>
                                                 <Link to="" data-id={item._id} onClick={(e) => handleDelete(e)}>

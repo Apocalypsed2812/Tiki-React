@@ -20,6 +20,18 @@ function Header() {
     const [showModalRegister, setShowModalRegister] = useState(false);
     const state = useContext(GlobalState);
     const isLogin = state.UserAPI.login[0];
+    // const [cart, setCart] = state.UserAPI.cart;
+    // const globalProducts = state.ProductAPI.products[0];
+
+    // let products = [];
+    // globalProducts.forEach((product) => {
+    //     cart.forEach((p) => {
+    //         console.log(p);
+    //         if (p.id === product._id) {
+    //             products.push({ ...product, quantity: p.quantity });
+    //         }
+    //     });
+    // });
 
     const handleSwitchRegister = () => {
         setShowModalLogin(false);
@@ -78,7 +90,7 @@ function Header() {
                             <Link to="/cart" className={cx('cart-top')} onClick={hanleClickCart}>
                                 <div className={cx('cart-wrap')}>
                                     <FontAwesomeIcon icon={faCartShopping} className={cx('icon-cart')} />
-                                    <span className={cx('cart-badget')}>4</span>
+                                    {/* <span className={cx('cart-badget')}>{products.length}</span> */}
                                 </div>
                                 <p>Giỏ Hàng</p>
                             </Link>
